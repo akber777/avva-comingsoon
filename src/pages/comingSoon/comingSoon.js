@@ -1,10 +1,58 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import Typical from "react-typical";
+import { date } from "../../components/queries/queries";
+import { useMutation, useQuery } from "react-query";
+import swal from "sweetalert";
 
 // css
 import "../../assets/css/_comingSoon.scss";
+import axios from "axios";
+import { baseUrl } from "../../components/services/api";
 
 const ComingSoon = () => {
+  const [email, setEmail] = useState();
+
+  const formData = new FormData();
+
+  const dateResult = useQuery("date", date, {
+    refetchOnWindowFocus: false,
+  });
+
+  const mutation = useMutation(
+    (email) => axios.post(baseUrl + "email.php", email),
+    {
+      onSuccess: function (succ) {
+        if (succ.status === 200) {
+          if (succ.data.success === true) {
+            setEmail("");
+            swal("Təbriklər!", "Emailiniz Ugurla Göndərildi", "success");
+          } else {
+            setEmail("");
+            swal("Səhv!", "Emailiniz Gödərilmədi", "error");
+          }
+        }
+      },
+    }
+  );
+
+  const TypicalComponent = useMemo(
+    () => (
+      <Typical
+        steps={[
+          "COMING SOON",
+          1000,
+          "BE READY TO",
+          1000,
+          "CONNECTED WITH US",
+          1000,
+        ]}
+        loop={Infinity}
+        wrapper="p"
+      />
+    ),
+    []
+  );
+
   return (
     <div
       className="comingSoon"
@@ -31,30 +79,39 @@ const ComingSoon = () => {
                 src={require("../../assets/images/right.png").default}
                 alt=""
               />
-              64
+              {dateResult.isLoading === false && dateResult.data.day}
             </p>
             <p className="comingSoon__timeSplit">
-              <span>15H</span>
-              <span>56MN</span>
-              <span>02S</span>
+              <span>
+                {dateResult.isLoading === false && dateResult.data.hour}H
+              </span>
+              <span>
+                {dateResult.isLoading === false && dateResult.data.minute}MN
+              </span>
+              <span>
+                {dateResult.isLoading === false && dateResult.data.second}S
+              </span>
             </p>
             <h1>WE ARE</h1>
-            <Typical
-              steps={[
-                "COMING SOON",
-                1000,
-                "BE READY TO",
-                1000,
-                "CONNECTED WITH US",
-                1000,
-              ]}
-              loop={Infinity}
-              wrapper="p"
-            />
+            {TypicalComponent}
           </div>
           <div className="comingSoon__form">
-            <input type="text" placeholder="Enter Your Email" />
-            <button>SUBSCRIBE</button>
+            <input
+              value={email}
+              onChange={(event) => {
+                setEmail(event.target.value);
+              }}
+              type="text"
+              placeholder="Enter Your Email"
+            />
+            <button
+              onClick={async () => {
+                await formData.append("email", email);
+                mutation.mutate(formData);
+              }}
+            >
+              SUBSCRIBE
+            </button>
           </div>
         </div>
       </div>
