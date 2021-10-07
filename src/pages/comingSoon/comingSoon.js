@@ -25,10 +25,10 @@ const ComingSoon = () => {
         if (succ.status === 200) {
           if (succ.data.success === true) {
             setEmail("");
-            swal("Təbriklər!", "Emailiniz Ugurla Göndərildi", "success");
+            swal("Success!", "Email Sent Successfully", "success");
           } else {
             setEmail("");
-            swal("Səhv!", "Emailiniz Gödərilmədi", "error");
+            swal("Error!", "Emila Not Sent", "error");
           }
         }
       },
