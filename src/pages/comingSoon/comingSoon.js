@@ -28,7 +28,7 @@ const ComingSoon = () => {
             swal("Success!", "Email Sent Successfully", "success");
           } else {
             setEmail("");
-            swal("Error!", "Emila Not Sent", "error");
+            swal("Error!", "Email Not Sent", "error");
           }
         }
       },
