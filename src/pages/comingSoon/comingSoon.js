@@ -63,7 +63,7 @@ const ComingSoon = () => {
       }}
     >
       <div className="comingSoon__logo">
-        <img src={require("../../assets/images/logo.png").default} alt="" />
+        <img src={require("../../assets/images/logo.svg").default} alt="" />
       </div>
       <div className="comingSoon__box">
         <div className="comingSoon__flexBox">

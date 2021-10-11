@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="App">
       <Title>
-        <link rel="icon" href={require("./assets/images/logo.png").default} />
+        <link rel="icon" href={require("./assets/images/logo.svg").default} />
       </Title>
       <Switch>
         <Route path="" component={ComingSoon} />
